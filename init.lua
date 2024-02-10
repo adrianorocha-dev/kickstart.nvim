@@ -359,16 +359,16 @@ require('telescope').setup {
   pickers = {
     find_files = {
       find_command = {
-        "rg",
-        "--no-ignore",
-        "--hidden",
-        "--files",
-        "-g",
-        "!**/node_modules/*",
-        "-g",
-        "!**/.git/*",
-        "-g",
-        "!**/.next/*"
+        'rg',
+        '--no-ignore',
+        '--hidden',
+        '--files',
+        '-g',
+        '!**/node_modules/*',
+        '-g',
+        '!**/.git/*',
+        '-g',
+        '!**/.next/*',
       },
     },
   },
@@ -610,6 +610,15 @@ local servers = {
       -- diagnostics = { disable = { 'missing-fields' } },
     },
   },
+
+  tailwindcss = {
+    experimental = {
+      classRegex = {
+        { "cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]" },
+        { "cx\\(([^)]*)\\)",  "(?:'|\"|`)([^']*)(?:'|\"|`)" }
+      }
+    }
+  },
 }
 
 -- Setup neovim lua configuration
@@ -692,31 +701,46 @@ cmp.setup {
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
 
-
 -- setting indentation with spaces instead of tabs:
 vim.opt.expandtab = true
 vim.opt.shiftwidth = 2
 vim.opt.tabstop = 2
 
-
 -- Setup prettier_d formatting
-require "lspconfig".efm.setup {
+require('lspconfig').efm.setup {
   init_options = { documentFormatting = true },
   settings = {
-    rootMarkers = { ".git/" },
+    rootMarkers = { '.git/' },
     languages = {
       lua = {
-        { formatCommand = "lua-format -i", formatStdin = true }
+        { formatCommand = 'lua-format -i', formatStdin = true },
       },
       javascript = {
         {
           formatCommand = 'prettierd "${INPUT}"',
           formatStdin = true,
           env = {
-            string.format('PRETTIERD_DEFAULT_CONFIG=%s', vim.fn.expand('~/.config/nvim/utils/linter-config/.prettierrc.json')),
+            string.format('PRETTIERD_DEFAULT_CONFIG=%s', vim.fn.expand '~/.config/nvim/utils/linter-config/.prettierrc.json'),
           },
-        }
+        },
       },
-    }
-  }
+    },
+  },
 }
+
+vim.filetype.add({
+  extension = {
+    conf = "conf",
+    env = "dotenv",
+    tiltfile = "tiltfile",
+    Tiltfile = "tiltfile",
+  },
+  filename = {
+    [".env"] = "dotenv",
+    ["tsconfig.json"] = "jsonc",
+    [".yamlfmt"] = "yaml",
+  },
+  pattern = {
+    ["%.env%.[%w_.-]+"] = "dotenv",
+  },
+})
