@@ -13,7 +13,7 @@ return {
 			{ expr = true, silent = true })
 
 		vim.g.codeium_filetypes = {
-			["env"] = false
+			dotenv = false
 		}
 	end
 }
