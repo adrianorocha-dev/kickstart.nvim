@@ -45,11 +45,6 @@ return {
         end
 
         if client.name == 'tsserver' then
-          vim.api.nvim_create_autocmd('BufWritePre', {
-            buffer = bufnr,
-            command = 'EslintFixAll',
-          })
-
           return
         end
 
